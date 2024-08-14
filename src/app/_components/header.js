@@ -1,4 +1,4 @@
-export default function Header() {
+export default function Header({ username }) {
   return (
     <header className="flex justify-between items-center mb-6">
       <div className="flex items-center">
@@ -14,7 +14,14 @@ export default function Header() {
         </a>
         <div className="flex items-center space-x-2">
           <i className="fas fa-user-circle text-[#6b21a8] text-2xl"></i>
-          <span className="text-[#000000]">🙂 Joane Smith</span>
+          <a href="">
+            <span
+              className="text-[#000000] hover:bg-gray-400 rounded-md p-2"
+              data-tooltip-target="tooltip-default"
+            >
+              🙂 {username}
+            </span>
+          </a>
         </div>
       </nav>
     </header>

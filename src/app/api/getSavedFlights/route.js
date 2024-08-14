@@ -16,10 +16,10 @@ export async function POST(req) {
     const database = client.db("flights");
     const collection = database.collection("savedFlights");
 
-    const data = body;
-    await collection.insertOne(data);
+    const query = { username: body.username };
+    const data = await collection.find(query).toArray();
 
-    return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "error" }, { status: 500 });
   } finally {

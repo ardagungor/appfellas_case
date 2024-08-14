@@ -7,9 +7,10 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [flights, setFlights] = useState([]);
-  const [isArrival, setIsArrival] = useState(false);
+  const [isArrival, setIsArrival] = useState(true);
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
+  const [username, setUsername] = useState("AppFellas test user");
 
   const calculateFlightDuration = (scheduleDateTime, estimatedLandingTime) => {
     const departureTime = new Date(scheduleDateTime);
@@ -46,8 +47,8 @@ export default function Home() {
     axios
       .post("/api/getFlights", {
         flightDirection: isArrival === true ? "A" : "D",
-        fromDate: fromDate.toLocaleDateString("en-GB"), // Format as dd-MM-yyyy
-        toDate: toDate.toLocaleDateString("en-GB"), // Format as dd-MM-yyyy
+        fromDate,
+        toDate,
       })
       .then((res) => {
         setFlights(res.data.flights);
@@ -61,7 +62,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col p-8 bg-gray-200">
-      <Header />
+      <Header username={username} />
       <Filter
         isArrival={isArrival}
         setIsArrival={setIsArrival}
@@ -73,10 +74,10 @@ export default function Home() {
       <div className="flex flex-col gap-8">
         {flights?.map((flight) => {
           const estimatedLandingTime = formatTime(flight.estimatedLandingTime);
-          const scheduleDateTime = formatTime(flight.scheduleDateTime);
           return (
             <FlightDetailBox
               key={flight.id}
+              username={username}
               from={
                 isArrival !== true
                   ? flight.publicFlightState.flightStates[0]
@@ -89,6 +90,7 @@ export default function Home() {
               }
               flightName={flight.flightName}
               estimatedLandingTime={estimatedLandingTime}
+              date={flight.estimatedLandingTime}
               flightDuration={calculateFlightDuration(
                 flight.scheduleDateTime,
                 flight.estimatedLandingTime

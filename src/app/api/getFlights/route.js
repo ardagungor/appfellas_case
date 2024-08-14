@@ -3,10 +3,10 @@
 import { NextResponse } from "next/server";
 const axios = require("axios");
 
-export async function POST(req, res) {
+export async function POST(req) {
   const BASE_URL = process.env.BASE_URL;
 
-  const body = await req.json(); // Parse the request body
+  const body = await req.json();
 
   let config = {
     method: "get",

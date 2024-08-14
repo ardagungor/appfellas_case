@@ -61,8 +61,8 @@ export default function Filter({
             type="date"
             className="border border-[#e5e7eb] rounded-[8px] p-2 min-w-40"
             placeholder="Departure"
-            value={fromDate.toISOString().substring(0, 10)}
-            onChange={(e) => setFromDate(new Date(e.target.value))}
+            value={fromDate}
+            onChange={setFromDate}
           />
         </div>
         <div className="flex items-center space-x-2">
@@ -71,8 +71,8 @@ export default function Filter({
             type="date"
             className="border border-[#e5e7eb] rounded-[8px] p-2 min-w-40"
             placeholder="Return"
-            value={toDate.toISOString().substring(0, 10)}
-            onChange={(e) => setToDate(new Date(e.target.value))}
+            value={toDate}
+            onChange={setToDate}
           />
         </div>
       </div>
