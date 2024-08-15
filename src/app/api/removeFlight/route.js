@@ -1,6 +1,6 @@
-// /api/getSavedFlights
+// /api/removeFlight
 
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -16,12 +16,13 @@ export async function POST(req) {
     const database = client.db("flights");
     const collection = database.collection("savedFlights");
 
-    const query = { username: body.username, isDeleted: { $ne: true } };
-    const sort = { date: body.sortOption === "descending" ? -1 : 1 };
-    const data = await collection.find(query).sort(sort).toArray();
+    const query = { _id: new ObjectId(body.id) };
+    const update = { $set: { isDeleted: true } };
+    const data = await collection.findOneAndUpdate(query, update);
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "error" }, { status: 500 });
   } finally {
     await client.close();

@@ -4,6 +4,7 @@ import Filter from "./_components/filter";
 import FlightDetailBox from "./_components/flightDetailBox";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Skeleton from "./_components/skeleton";
 
 export default function Home() {
   const [flights, setFlights] = useState([]);
@@ -11,6 +12,7 @@ export default function Home() {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [username, setUsername] = useState("AppFellas test user");
+  const [isLoading, setIsLoading] = useState(true);
 
   const calculateFlightDuration = (scheduleDateTime, estimatedLandingTime) => {
     const departureTime = new Date(scheduleDateTime);
@@ -44,6 +46,7 @@ export default function Home() {
   };
 
   const getFlights = () => {
+    setIsLoading(true);
     axios
       .post("/api/getFlights", {
         flightDirection: isArrival === true ? "A" : "D",
@@ -52,13 +55,14 @@ export default function Home() {
       })
       .then((res) => {
         setFlights(res.data.flights);
+        setIsLoading(false);
       })
       .catch((e) => console.log(e));
   };
 
   useEffect(() => {
     getFlights();
-  }, [isArrival, fromDate, toDate]);
+  }, [isArrival]);
 
   return (
     <main className="flex min-h-screen flex-col p-8 bg-gray-200">
@@ -72,33 +76,40 @@ export default function Home() {
         setToDate={setToDate}
       />
       <div className="flex flex-col gap-8">
-        {flights?.map((flight) => {
-          const estimatedLandingTime = formatTime(flight.estimatedLandingTime);
-          return (
-            <FlightDetailBox
-              key={flight.id}
-              username={username}
-              from={
-                isArrival !== true
-                  ? flight.publicFlightState.flightStates[0]
-                  : flight.route.destinations[0]
-              }
-              destination={
-                isArrival === true
-                  ? flight.publicFlightState.flightStates[0]
-                  : flight.route.destinations[0]
-              }
-              flightName={flight.flightName}
-              estimatedLandingTime={estimatedLandingTime}
-              date={flight.estimatedLandingTime}
-              flightDuration={calculateFlightDuration(
-                flight.scheduleDateTime,
-                flight.estimatedLandingTime
-              )}
-              type="allFlights"
-            />
-          );
-        })}
+        {/* Display skeleton while the data is loading */}
+        {isLoading === true ? (
+          <Skeleton />
+        ) : (
+          flights?.map((flight) => {
+            const estimatedLandingTime = formatTime(
+              flight.estimatedLandingTime
+            );
+            return (
+              <FlightDetailBox
+                key={flight.id}
+                username={username}
+                from={
+                  isArrival !== true
+                    ? flight.publicFlightState.flightStates[0]
+                    : flight.route.destinations[0]
+                }
+                destination={
+                  isArrival === true
+                    ? flight.publicFlightState.flightStates[0]
+                    : flight.route.destinations[0]
+                }
+                flightName={flight.flightName}
+                estimatedLandingTime={estimatedLandingTime}
+                date={flight.estimatedLandingTime}
+                flightDuration={calculateFlightDuration(
+                  flight.scheduleDateTime,
+                  flight.estimatedLandingTime
+                )}
+                type="allFlights"
+              />
+            );
+          })
+        )}
       </div>
     </main>
   );

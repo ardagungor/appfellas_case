@@ -28,6 +28,20 @@ export default function FlightDetailBox(props) {
       .catch((e) => alert("Error: " + e));
   };
 
+  const removeFlight = () => {
+    axios
+      .post("/api/removeFlight", {
+        id: props.id,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          alert("Flight deleted successfully!");
+          props.refreshFlights();
+        }
+      })
+      .catch((e) => alert("Error: " + e));
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6 relative">
       <div className="flex justify-between items-center text-gray-600">
@@ -54,20 +68,26 @@ export default function FlightDetailBox(props) {
       <div className="flex justify-between items-center mt-4">
         <div>
           <p className="text-xl text-purple-700 font-bold">
+            {/* Set a random price since we don't have price info */}
             Price: ${Math.floor(Math.random() * 400)}
           </p>
         </div>
       </div>
-      {props.type === "allFlights" && (
+      {
         <div className="absolute bottom-0 right-0">
+          {/* Button CSS and functionality changes depending on the page it is presented */}
           <button
-            className="bg-purple-600 text-white py-2 px-4 min-h-20 min-w-30 rounded-tl-lg rounded-br-lg font-semibold"
-            onClick={saveFlight}
+            className={`${
+              props.type === "allFlights" ? "bg-purple-600" : "bg-red-600"
+            } text-white py-2 px-4 min-h-20 min-w-30 rounded-tl-lg rounded-br-lg font-semibold`}
+            onClick={() => {
+              props.type === "allFlights" ? saveFlight() : removeFlight();
+            }}
           >
-            Book Flight
+            {props.type === "allFlights" ? "Book Flight" : "Remove flight"}
           </button>
         </div>
-      )}
+      }
       <div className="mt-4">
         <a href="#" className="text-purple-600 text-sm">
           Check the details
