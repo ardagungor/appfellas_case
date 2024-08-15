@@ -10,6 +10,12 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+### TODOs
+* Implement flight detail page using /flights/{id} endpoint of Schiphol PublicFlight API
+* Add advanced filter options on both screens such as airline selection, direct or connecting flights, one way - roundtrip selection
+* Add data validation
+* Add user feedback UI (alerts, dialogs etc.)
+
 ## Getting Started
 
 First, run the development server:
