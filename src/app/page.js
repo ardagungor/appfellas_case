@@ -10,7 +10,9 @@ export default function Home() {
   const [flights, setFlights] = useState([]);
   const [isArrival, setIsArrival] = useState(true);
   const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const [toDate, setToDate] = useState(
+    new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+  );
   const [username, setUsername] = useState("AppFellas test user");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,19 +52,37 @@ export default function Home() {
     axios
       .post("/api/getFlights", {
         flightDirection: isArrival === true ? "A" : "D",
-        fromDate,
-        toDate,
+        fromScheduleDate: fromDate.toISOString().split("T")[0],
+        toScheduleDate: toDate.toISOString().split("T")[0],
       })
       .then((res) => {
         setFlights(res.data.flights);
         setIsLoading(false);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
+    // Calculate the difference in days between fromDate and toDate
+    const timeDifference = new Date(toDate) - new Date(fromDate);
+    const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+    if (dayDifference > 3) {
+      // If toDate is more than 3 days ahead of fromDate, move toDate to 2 days ahead
+      alert("The difference between dates cannot be more than 3 days.");
+      setToDate(new Date(fromDate.getTime() + 2 * 24 * 60 * 60 * 1000));
+    } else if (dayDifference < 0) {
+      // If fromDate is greater than toDate, set toDate to 2 days ahead of fromDate and allow the user to select that date
+      setToDate(new Date(fromDate.getTime() + 2 * 24 * 60 * 60 * 1000));
+    }
+  }, [fromDate, toDate]);
+
+  useEffect(() => {
     getFlights();
-  }, [isArrival]);
+  }, [isArrival, fromDate, toDate]);
 
   return (
     <main className="flex min-h-screen flex-col p-8 bg-gray-200">

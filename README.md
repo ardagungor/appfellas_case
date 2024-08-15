@@ -12,9 +12,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### TODOs
 * Implement flight detail page using /flights/{id} endpoint of Schiphol PublicFlight API
-* Add advanced filter options on both screens such as airline selection, direct or connecting flights, one way - roundtrip selection
+* Add advanced filter options on both screens such as airline selection, direct or connecting flights, one way - roundtrip selection [in progress]
 * Add data validation
 * Add user feedback UI (alerts, dialogs etc.)
+* Improve UX by easing the filtering processes
+* Add responsiveness
+* Cover external API error messages
+* Disable unavailable dates on date picker
 
 ## Getting Started
 

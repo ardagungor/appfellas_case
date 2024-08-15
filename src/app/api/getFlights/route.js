@@ -11,7 +11,7 @@ export async function POST(req) {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `${BASE_URL}?scheduleDate=2024-08-16&includedelays=false&page=0&sort=%2BscheduleDateTime&flightDirection=${body.flightDirection}`,
+    url: `${BASE_URL}?fromScheduleDate=${body.fromScheduleDate}&toScheduleDate=${body.toScheduleDate}&includedelays=false&page=0&sort=%2BscheduleDateTime&flightDirection=${body.flightDirection}`,
     headers: {
       Accept: "application/json",
       app_id: process.env.APP_ID,
