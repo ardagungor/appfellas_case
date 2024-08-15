@@ -16,8 +16,9 @@ export async function POST(req) {
     const database = client.db("flights");
     const collection = database.collection("savedFlights");
 
-    const query = { username: body.username };
-    const data = await collection.find(query).toArray();
+    const query = { username: body.username, isDeleted: { $ne: true } };
+    const sort = { date: body.sortOption === "descending" ? -1 : 1 };
+    const data = await collection.find(query).sort(sort).toArray();
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

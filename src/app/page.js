@@ -95,6 +95,7 @@ export default function Home() {
                 flight.scheduleDateTime,
                 flight.estimatedLandingTime
               )}
+              type="allFlights"
             />
           );
         })}

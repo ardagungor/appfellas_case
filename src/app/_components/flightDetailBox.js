@@ -58,14 +58,16 @@ export default function FlightDetailBox(props) {
           </p>
         </div>
       </div>
-      <div className="absolute bottom-0 right-0">
-        <button
-          className="bg-purple-600 text-white py-2 px-4 min-h-20 min-w-30 rounded-tl-lg rounded-br-lg font-semibold"
-          onClick={saveFlight}
-        >
-          Book Flight
-        </button>
-      </div>
+      {props.type === "allFlights" && (
+        <div className="absolute bottom-0 right-0">
+          <button
+            className="bg-purple-600 text-white py-2 px-4 min-h-20 min-w-30 rounded-tl-lg rounded-br-lg font-semibold"
+            onClick={saveFlight}
+          >
+            Book Flight
+          </button>
+        </div>
+      )}
       <div className="mt-4">
         <a href="#" className="text-purple-600 text-sm">
           Check the details

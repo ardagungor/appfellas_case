@@ -17,7 +17,7 @@ export async function POST(req) {
     const collection = database.collection("savedFlights");
 
     const data = body;
-    await collection.insertOne(data);
+    await collection.insertOne({ ...data, isDeleted: false });
 
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
