@@ -1,5 +1,7 @@
 [Live demo](https://appfellas-case.vercel.app)
 
+### To view saved flights, please click the username at the top right corner
+
 ## Screenshots
 
 ![Loading state showing skeleton](./public/screenshots/screenshot1.png)
